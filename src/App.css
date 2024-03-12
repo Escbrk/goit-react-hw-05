@@ -1,0 +1,20 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+ul {
+  list-style: none;
+  padding: 30px 20px;
+}
+
+.ReactModal__Content--after-open {
+  border: none !important;
+  padding: 0 !important;
+  background: none !important;
+}
+
+.ReactModal__Overlay--after-open {
+  background-color: rgba(13, 3, 26, 0.699) !important;
+}
