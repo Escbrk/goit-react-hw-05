@@ -10,7 +10,7 @@ const instance = axios.create({
   },
 });
 
-const data = async (query) => {
+const fetchMovie = async (query) => {
   return await instance.get(`/search/movie${query}`);
 };
 
