@@ -1,17 +1,62 @@
 import "./App.css";
 import Navigation from "./components/Navigation/Navigation";
-import fetchMovie from "../movie-api";
+import { fetchTranding, fetchMovieById } from "../movie-api";
+import { Suspense, lazy, useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+const TrandingsToday = lazy(() =>
+  import("./components/TrandingsToday/TrandingsToday")
+);
+const MoviePage = lazy(() => import("./pages/MoviePage/MoviePage"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage/NotFoundPage"));
 
 const App = () => {
-  try {
-    const getData = fetchMovie("?include_adult=false&language=en-US&page=1");
+  const [tranding, setTranding] = useState([]);
+  const [choosedMovie, setChoosedMovie] = useState([]);
 
-    return getData;
-  } catch (error) {}
+  useEffect(() => {
+    const getTranding = async () => {
+      try {
+        const data = await fetchTranding();
+        setTranding(data);
+      } catch (error) {
+        //
+      } finally {
+        //
+      }
+    };
+    getTranding();
+  }, []);
+
+  const handleForwardClick = async (id) => {
+    try {
+      const data = await fetchMovieById(id);
+      return setChoosedMovie(data);
+    } catch (error) {
+      //
+    } finally {
+      //
+    }
+  };
 
   return (
     <div>
       <Navigation />
+
+      <Suspense>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <TrandingsToday onClick={handleForwardClick} movies={tranding} />
+            }
+          />
+          <Route
+            path={`/movie/:movieId`}
+            element={<MoviePage movie={choosedMovie} />}
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 };
