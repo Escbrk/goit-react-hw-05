@@ -19,3 +19,18 @@ export const fetchMovieById = async (id) => {
   const response = await instance.get(`/movie/${id}`);
   return response.data;
 };
+
+export const searchMovie = async (query) => {
+  const response = await instance.get(`/search/movie?query=${query}`);
+  return response.data;
+};
+
+export const fetchCreditsById = async (id) => {
+  const response = await instance.get(`/movie/${id}/credits`);
+  return response.data.cast;
+};
+
+export const fetchReviewsById = async (id) => {
+  const response = await instance.get(`/movie/${id}/reviews`);
+  return response.data.results;
+};

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const TrandingsToday = ({ movies, onClick }) => {
+const HomePage = ({ movies, onClick }) => {
   return (
     <div>
       <h1>Tranding Movies</h1>
@@ -24,4 +24,4 @@ const TrandingsToday = ({ movies, onClick }) => {
   );
 };
 
-export default TrandingsToday;
+export default HomePage;

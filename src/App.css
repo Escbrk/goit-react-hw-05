@@ -3,6 +3,8 @@ body {
   /* flex-direction: column; */
   /* justify-content: center; */
   padding-left: 50px;
+  position: absolute;
+  top: 0;
 }
 
 ul {
