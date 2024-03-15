@@ -1,25 +1,10 @@
-import { Link } from "react-router-dom";
+import MovieList from "../../components/MovieList/MovieList";
 
 const HomePage = ({ movies, onClick }) => {
   return (
     <div>
       <h1>Tranding Movies</h1>
-      <ul>
-        {movies.map((movie) => {
-          return (
-            <li key={movie.id}>
-              <Link
-                onClick={() => {
-                  onClick(movie.id);
-                }}
-                to={`/movie/${movie.id}`}
-              >
-                {movie.title}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <MovieList movies={movies} onClick={onClick} />
     </div>
   );
 };

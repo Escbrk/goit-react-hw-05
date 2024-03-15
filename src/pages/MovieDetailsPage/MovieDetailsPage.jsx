@@ -1,13 +1,13 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import "./MovieDetailsPage.module.css";
 import { Suspense } from "react";
 
 const MovieDetailsPage = ({
-  movie: { id, title, overview, genres, vote_average, poster_path },
+  movie: { title, overview, genres, vote_average, poster_path },
   onClickCredits,
   onClickReviews,
 }) => {
-  console.log(id);
+  const { movieId } = useParams();
   return (
     <div>
       <Link to={"/"}>⬅️Go Back</Link>
@@ -21,8 +21,8 @@ const MovieDetailsPage = ({
       <p>{overview}</p>
       <b>Genres</b>
       {genres &&
-        genres.map((genre) => {
-          return <p key={genre.id}>{genre.name}</p>;
+        genres.map(({ id, name }) => {
+          return <p key={id}>{name}</p>;
         })}
       <hr />
       <p>Additional information:</p>
@@ -31,7 +31,7 @@ const MovieDetailsPage = ({
           <NavLink
             to={"credits"}
             onClick={() => {
-              onClickCredits(id);
+              onClickCredits(movieId);
             }}
           >
             Credits
@@ -41,7 +41,7 @@ const MovieDetailsPage = ({
           <NavLink
             to={"reviews"}
             onClick={() => {
-              onClickReviews(id);
+              onClickReviews(movieId);
             }}
           >
             Reviews

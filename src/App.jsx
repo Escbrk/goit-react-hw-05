@@ -9,10 +9,11 @@ import {
 } from "../movie-api";
 import { Suspense, lazy, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import MoviesPage from "./pages/MoviesPage/MoviesPage";
-import Loader from "./components/Loader/Loader";
-import toast, { Toaster } from "react-hot-toast";
-import Error from "./components/Error/Error";
+import { Toaster } from "react-hot-toast";
+import MovieList from "./components/MovieList/MovieList";
+const Error = lazy(() => import("./components/Error/Error"));
+const MoviesPage = lazy(() => import("./pages/MoviesPage/MoviesPage"));
+const Loader = lazy(() => import("./components/Loader/Loader"));
 const MovieCredits = lazy(() =>
   import("./components/MovieCredits/MovieCredits")
 );
@@ -28,8 +29,11 @@ const NotFoundPage = lazy(() => import("./pages/NotFoundPage/NotFoundPage"));
 const App = () => {
   const [tranding, setTranding] = useState([]);
   const [choosedMovie, setChoosedMovie] = useState([]);
+  const [foundedMovies, setFoundedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [credits, setCredits] = useState([]);
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
     const getTranding = async () => {
@@ -60,6 +64,49 @@ const App = () => {
     }
   };
 
+  const fetchCredits = async (id) => {
+    if (credits.length > 0) return;
+
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      const response = await fetchCreditsById(id);
+      setCredits(response);
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchReviews = async (id) => {
+    if (reviews.length > 0) return;
+
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      const response = await fetchReviewsById(id);
+      setReviews(response);
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const findMovie = async (query) => {
+    try {
+      setIsError(false);
+      setIsLoading(true);
+      const response = await searchMovie(query);
+      setFoundedMovies(response);
+    } catch (error) {
+      setIsError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  // const { movieId } = useParams();
   return (
     <div>
       <Toaster />
@@ -77,23 +124,33 @@ const App = () => {
           />
           <Route
             path="/movie"
-            element={<MoviesPage onSearch={searchMovie} />}
+            element={
+              <MoviesPage
+                onSearch={findMovie}
+                movies={foundedMovies}
+                onClick={handleForwardClick}
+              />
+            }
           />
           <Route
             path={`/movie/:movieId`}
             element={
               <MovieDetailsPage
                 movie={choosedMovie}
-                onClickCredits={fetchCreditsById}
-                onClickReviews={fetchReviewsById}
+                onClickCredits={fetchCredits}
+                onClickReviews={fetchReviews}
               />
             }
           >
             <Route
               path="credits"
-              element={<MovieCredits onClick={fetchCreditsById} />}
+              element={<MovieCredits credits={credits} />}
             />
-            <Route path="reviews" element={<MovieReviews />} />
+
+            <Route
+              path="reviews"
+              element={<MovieReviews reviews={reviews} />}
+            />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

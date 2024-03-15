@@ -22,7 +22,7 @@ export const fetchMovieById = async (id) => {
 
 export const searchMovie = async (query) => {
   const response = await instance.get(`/search/movie?query=${query}`);
-  return response.data;
+  return response.data.results;
 };
 
 export const fetchCreditsById = async (id) => {

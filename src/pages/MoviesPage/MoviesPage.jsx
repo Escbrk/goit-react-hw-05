@@ -1,25 +1,12 @@
-import { Field, Formik, Form } from "formik";
+import SearchField from "../../components/SearchField/SearchField";
+import MovieList from "../../components/MovieList/MovieList";
 
-const MoviesPage = ({ onSearch }) => {
+const MoviesPage = ({ onSearch, movies, onClick }) => {
   return (
-    <Formik
-      initialValues={{ query: "" }}
-      onSubmit={(values, actions) => {
-        actions.resetForm();
-
-        if (values.query.trim() === "") {
-          console.log("error");
-          return;
-        }
-
-        onSearch(values.query.toLowerCase());
-      }}
-    >
-      <Form>
-        <Field name="query" type="search" placeholder="Search movie..." />
-        <button type="submit">Search</button>
-      </Form>
-    </Formik>
+    <div>
+      <SearchField onSearch={onSearch} />
+      <MovieList movies={movies} onClick={onClick} />
+    </div>
   );
 };
 
