@@ -1,7 +1,7 @@
 const MovieReviews = ({reviews}) => {
   return (
     <ul>
-      {reviews &&
+      {reviews.length > 0 ?
         reviews.map((review) => {
           return (
             <li key={review.id}>
@@ -10,7 +10,7 @@ const MovieReviews = ({reviews}) => {
               <hr />
             </li>
           );
-        })}
+        }) : <p>Sorry, here's no reviews yet</p>}
     </ul>
   );
 };
