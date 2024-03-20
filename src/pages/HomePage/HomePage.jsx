@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import MovieList from "../../components/MovieList/MovieList";
 import { getTrending } from "../../../movie-api";
-import Error from "../../components/Error/Error";
-import Loader from "../../components/Loader/Loader";
+const Error = lazy(() => import("../../components/Error/Error"));
+const Loader = lazy(() => import("../../components/Loader/Loader"));
 
 const HomePage = () => {
   const [tranding, setTranding] = useState([]);

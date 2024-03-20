@@ -1,10 +1,5 @@
-// import toast from "react-hot-toast";
-
 const Error = () => {
-//   const notify = toast.error("HTTP Error, pls try again");
-
-  //   return <div>{notify}</div>;
-  return <div>Error</div>;
+  return <h2>HTTP Error, pls try again</h2>;
 };
 
 export default Error;

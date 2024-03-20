@@ -15,14 +15,14 @@ export const getTrending = async () => {
   return response.data.results;
 };
 
-export const getMovieById = async (id) => {
-  const response = await instance.get(`/movie/${id}`);
-  return response.data;
-};
-
 export const getMovie = async (query) => {
   const response = await instance.get(`/search/movie?query=${query}`);
   return response.data.results;
+};
+
+export const getMovieById = async (id) => {
+  const response = await instance.get(`/movie/${id}`);
+  return response.data;
 };
 
 export const getCreditsById = async (id) => {

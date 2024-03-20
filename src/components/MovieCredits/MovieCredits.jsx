@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getCreditsById } from "../../../movie-api";
-import Loader from "../Loader/Loader";
-import Error from "../Error/Error";
+const Error = lazy(() => import("../../components/Error/Error"));
+const Loader = lazy(() => import("../../components/Loader/Loader"));
 
 const MovieCredits = () => {
   const { movieId } = useParams();
