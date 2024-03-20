@@ -10,45 +10,34 @@ const MoviesPage = () => {
   const [foundedMovies, setFoundedMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
-  const [params, setParams] = useSearchParams();
-  console.log(params.get("query"));
+  const [params] = useSearchParams();
+  console.log(params);
 
-  const findMovie = async (query) => {
-    console.log(query);
-    try {
-      setIsError(false);
-      setIsLoading(true);
-      const response = await getMovie(query);
-      setFoundedMovies(response);
-    } catch (error) {
-      setIsError(true);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useEffect(() => {
+    const findMovie = async (query) => {
+      try {
+        setIsError(false);
 
-  // useEffect(() => {
-  //   const findMovie = async (query) => {
-  //     console.log(query);
-  //     try {
-  //       setIsError(false);
-  //       setIsLoading(true);
-  //       params.set("query", query);
-  //       setParams(params);
-  //       const response = await getMovie(query);
-  //       setFoundedMovies(response);
-  //     } catch (error) {
-  //       setIsError(true);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-  //   findMovie(params.get("query") ?? "");
-  // }, [params]);
+        if (!params.size) {
+          setIsLoading(false);
+        } else {
+          setIsLoading(true);
+        }
+        
+        const response = await getMovie(query);
+        setFoundedMovies(response);
+      } catch (error) {
+        setIsError(true);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    findMovie(params.get("query") ?? "");
+  }, [params]);
 
   return (
     <div>
-      <SearchField onSearch={findMovie} />
+      <SearchField />
       {isLoading && <Loader />}
       {isError && <Error />}
       {!isLoading && <MovieList movies={foundedMovies} />}

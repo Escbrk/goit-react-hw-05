@@ -31,19 +31,23 @@ const MovieReviews = () => {
       {isLoading && <Loader />}
       {isError && <Error />}
       <br />
-      <ul>
-        {!isLoading &&
-          reviews &&
-          reviews.map((review) => {
-            return (
-              <li key={review.id}>
-                <h3>Author: {review.author}</h3>
-                <p>{review.content}</p>
-                <hr />
-              </li>
-            );
-          })}
-      </ul>
+      {!reviews.length ? (
+        <b>Sorry, we don't have any reviews yet</b>
+      ) : (
+        <ul>
+          {!isLoading &&
+            reviews &&
+            reviews.map((review) => {
+              return (
+                <li key={review.id}>
+                  <h3>Author: {review.author}</h3>
+                  <p>{review.content}</p>
+                  <hr />
+                </li>
+              );
+            })}
+        </ul>
+      )}
     </>
   );
 };

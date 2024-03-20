@@ -1,16 +1,29 @@
 import { Field, Formik, Form } from "formik";
-// import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
 
-const SearchField = ({ onSearch }) => {
-  // const validationSchema =
+const SearchField = () => {
+  const [params, setParams] = useSearchParams();
+  const notify = () => toast.error("This field can't be empty!");
+  const validationSchema = Yup.object().shape({
+    query: Yup.string().min(1, "Too Short! ❌").required(notify),
+  });
+
+  const onReset = () => {
+    params.delete("query");
+    setParams(params);
+  };
 
   return (
     <Formik
       initialValues={{ query: "" }}
+      validationSchema={validationSchema}
       onSubmit={(values, actions) => {
         actions.resetForm();
 
-        onSearch(values.query.toLowerCase());
+        params.set("query", values.query);
+        setParams(params);
       }}
     >
       {({ values }) => (
@@ -23,6 +36,9 @@ const SearchField = ({ onSearch }) => {
           />
           <button type="submit" disabled={!values.query.trim()}>
             Search
+          </button>
+          <button type="reset" onClick={onReset}>
+            Reset
           </button>
         </Form>
       )}

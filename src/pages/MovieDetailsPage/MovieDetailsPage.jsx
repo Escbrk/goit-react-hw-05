@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router-dom";
 import "./MovieDetailsPage.module.css";
-import { Suspense, lazy, useEffect, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { getMovieById } from "../../../movie-api";
 const Error = lazy(() => import("../../components/Error/Error"));
 const Loader = lazy(() => import("../../components/Loader/Loader"));
@@ -18,7 +18,8 @@ const MovieDetailsPage = () => {
   const [isError, setIsError] = useState(false);
 
   const location = useLocation();
-  console.log(location.state);
+  const backLinkRef = useRef(location.state?.from ?? "/");
+  console.log(backLinkRef.current);
 
   const { title, overview, genres, vote_average, poster_path } = movieInfo;
 
@@ -40,7 +41,7 @@ const MovieDetailsPage = () => {
 
   return (
     <div>
-      <Link to={"/"}>⬅️Go Back</Link>
+      <Link to={backLinkRef.current}>⬅️Go Back</Link>
       <br />
       {isLoading && <Loader />}
       {isError && <Error />}
@@ -71,14 +72,10 @@ const MovieDetailsPage = () => {
           <p>Additional information:</p>
           <ul>
             <li>
-              <NavLink to={"credits"} from={location}>
-                Credits
-              </NavLink>
+              <NavLink to={"credits"}>Credits</NavLink>
             </li>
             <li>
-              <NavLink to={"reviews"} from={location}>
-                Reviews
-              </NavLink>
+              <NavLink to={"reviews"}>Reviews</NavLink>
             </li>
           </ul>
           <Suspense>
