@@ -22,7 +22,7 @@ const App = () => {
       <Toaster />
       <Navigation />
 
-      <Suspense>
+      <Suspense fallback={null}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/movie" element={<MoviesPage />} />

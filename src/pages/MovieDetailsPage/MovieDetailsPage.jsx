@@ -78,7 +78,7 @@ const MovieDetailsPage = () => {
               <NavLink to={"reviews"}>Reviews</NavLink>
             </li>
           </ul>
-          <Suspense>
+          <Suspense fallback={null}>
             <Outlet />
           </Suspense>
         </>
